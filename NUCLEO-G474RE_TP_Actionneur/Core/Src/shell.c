@@ -7,6 +7,7 @@
 #include "main.h"
 #include "gpio.h"
 #include "usart.h"
+#include "tim.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -40,6 +41,7 @@ const uint8_t pinout[]=""
 
 const uint8_t powerOn[]="POWER ON\r\n"; // contenant le message d'allumage du moteur
 const uint8_t powerOff[]="POWER OFF\r\n";
+uint16_t speed=0;
 
 void handle_command(char *argv[]){
 	if(strcmp(argv[0],"set")==0){
@@ -73,6 +75,17 @@ void handle_command(char *argv[]){
 	{
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_RESET);
 		HAL_UART_Transmit(&huart2, powerOff, sizeof(powerOff), HAL_MAX_DELAY);
+	}
+	else if(strcmp(argv[0],"speed=")==0){
+		speed = (uint16_t) atoi(argv[1]);
+		if(speed>(uint16_t)100){
+			speed=(uint16_t)100;
+		}
+		speed = speed*( (uint16_t) 1250/100);
+		__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,speed);
+		__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,speed);
+		sprintf(uartTxBuffer,"Set speed to : %d\r\n",atoi(argv[1]));
+		HAL_UART_Transmit(&huart2, uartTxBuffer, 32, HAL_MAX_DELAY);
 	}
 	else{
 		HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
