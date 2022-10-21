@@ -66,10 +66,12 @@ void handle_command(char *argv[]){
 	}
 	else if(strcmp(argv[0],"start")==0)
 	{
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_SET);
 		HAL_UART_Transmit(&huart2, powerOn, sizeof(powerOn), HAL_MAX_DELAY);
 	}
 	else if(strcmp(argv[0],"stop")==0)
 	{
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_RESET);
 		HAL_UART_Transmit(&huart2, powerOff, sizeof(powerOff), HAL_MAX_DELAY);
 	}
 	else{
