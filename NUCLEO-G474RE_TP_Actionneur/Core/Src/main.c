@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <string.h>
+#include "shell.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -160,24 +161,7 @@ int main(void)
 		}
 
 		if(newCmdReady){
-			if(strcmp(argv[0],"set")==0){
-				if(strcmp(argv[1],"PA5")==0){
-					HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, atoi(argv[2]));
-					sprintf(uartTxBuffer,"Switch on/off led : %d\r\n",atoi(argv[2]));
-					HAL_UART_Transmit(&huart2, uartTxBuffer, 32, HAL_MAX_DELAY);
-				}
-				else{
-					HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
-				}
-			}
-			else if(strcmp(argv[0],"get")==0)
-			{
-				HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
-			}
-			else{
-				HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
-			}
-			HAL_UART_Transmit(&huart2, prompt, sizeof(prompt), HAL_MAX_DELAY);
+			handle_command(argv);
 			newCmdReady = 0;
 		}
     /* USER CODE END WHILE */
