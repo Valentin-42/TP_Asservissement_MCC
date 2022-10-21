@@ -22,24 +22,24 @@ const uint8_t help[]=""
 		"\r\n*-----------------------------*"
 		"\r\n| Commandes disponible        |"
 		"\r\n| 1. pinout                   |"
-		"\r\n| 2. start 				   |"
-		"\r\n| 3. stop   				   |"
+		"\r\n| 2. start                    |"
+		"\r\n| 3. stop                     |"
 		"\r\n*-----------------------------*"
 		"\r\n"; // contenant le message d'aide, la liste des fonctions
 
 const uint8_t pinout[]=""
 		"\r\n*-----------------------------*"
-		"\r\n| Broches & fonctions		   |"
-		"\r\n| PA12 -> TIM1_CH2N		   |"
-		"\r\n| PA11 -> TIM1_CH1N		   |"
-		"\r\n| PA9 -> TIM2_CH2   		   |"
-		"\r\n| PA8 -> TIM2_CH1   		   |"
-		"\r\n| PC3 -> ISO_RESET   		   |"
+		"\r\n| Broches & fonctions         |"
+		"\r\n| PA12 -> TIM1_CH2N           |"
+		"\r\n| PA11 -> TIM1_CH1N           |"
+		"\r\n| PA9 -> TIM2_CH2             |"
+		"\r\n| PA8 -> TIM2_CH1             |"
+		"\r\n| PC3 -> ISO_RESET            |"
 		"\r\n*-----------------------------*"
 		"\r\n"; // contenant la liste des pin utilisées
 
-const uint8_t powerOn[]="\r\nPOWER ON\r\n"; // contenant le message d'allumage du moteur
-const uint8_t powerOff[]="\r\nPOWER OFF\r\n";
+const uint8_t powerOn[]="POWER ON\r\n"; // contenant le message d'allumage du moteur
+const uint8_t powerOff[]="POWER OFF\r\n";
 
 void handle_command(char *argv[]){
 	if(strcmp(argv[0],"set")==0){
