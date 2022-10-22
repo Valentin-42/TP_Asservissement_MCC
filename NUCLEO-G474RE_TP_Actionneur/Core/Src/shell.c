@@ -25,6 +25,7 @@ const uint8_t help[]=""
 		"\r\n| 1. pinout                   |"
 		"\r\n| 2. start                    |"
 		"\r\n| 3. stop                     |"
+		"\r\n| 4. speed= x%                |"
 		"\r\n*-----------------------------*"
 		"\r\n"; // contenant le message d'aide, la liste des fonctions
 
@@ -84,7 +85,7 @@ void handle_command(char *argv[]){
 		speed = speed*( (uint16_t) 1250/100);
 		__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,speed);
 		__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,speed);
-		sprintf(uartTxBuffer,"Set speed to : %d\r\n",atoi(argv[1]));
+		sprintf(uartTxBuffer,"Set speed to : %d %\r\n",atoi(argv[1]));
 		HAL_UART_Transmit(&huart2, uartTxBuffer, 32, HAL_MAX_DELAY);
 	}
 	else{
