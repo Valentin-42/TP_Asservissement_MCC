@@ -8,6 +8,7 @@
 #include "gpio.h"
 #include "usart.h"
 #include "tim.h"
+#include "shell.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -95,17 +96,17 @@ void handle_command(char *argv[]){
 		__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,12500-speed);*/
 		if(last_speed<speed){
 			while(last_speed<speed){
-				last_speed+=100;
+				last_speed+=PWM_STEP;
 				__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,last_speed);
-				__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,12500-last_speed);
+				__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,TIM_MAX-last_speed);
 				HAL_Delay(50);
 			}
 		}
 		else if (last_speed>speed){
 			while(last_speed>speed){
-				last_speed-=100;
+				last_speed-=PWM_STEP;
 				__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,last_speed);
-				__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,12500-last_speed);
+				__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,TIM_MAX-last_speed);
 				HAL_Delay(50);
 			}
 		}
