@@ -35,39 +35,40 @@
 
 ⚙️ Calcul du temps mort : 
   
-➡️ $Fclk = 100MHz  \implies Tclk = 10ns$
- ${2*Tclk= 20 ns} \implies {Fclk = 2e-8 Hz}$
+➡️ $Fclk = 100MHz  \implies Tclk = 10ns$<br/>
+ ${2*Tclk= 20 ns} \implies {Fclk = 2e-8 Hz}$<br/>
 Dead time souhaité : $2 us \implies Fdt = 2e-6 Hz$
-
+<br/>
 ➡️ ${Fdt\over Fclk}= {2e-6\over2e-8} = 100$
-
+<br/>
 📖 Via doc (ref manuel cartes G4) formule 2 : $Tdt =  (64 + **36**)*2t = 2us$ avec bits[7:5] = 10.
-
+<br/>
 ✏️ On écrit donc 
 $10100100 = 0xA4 = 164$ dans le registre TIMx_BTR (ou champ dead time dans STM32CubeMx)
 
 ***
 
-🔴 Génération PWM complémentaire décalée de T/2 :  🔴
- Tim counter : center aligned
-PWM 1 : 80% rapport cyclique / PWM 2 : 20% du rapport cyclique 
-Fréquence PWM autour de 16 KHz => {FCLK : 100Mhz / PSC : 5 / ARR : 12500} 
+🔴 Génération PWM complémentaire décalée de T/2 :  🔴<br/>
+ Tim counter : center aligned<br/>
+PWM 1 : 80% rapport cyclique / PWM 2 : 20% du rapport cyclique <br/>
+Fréquence PWM autour de 16 KHz => {FCLK : 100Mhz / PSC : 5 / ARR : 12500} <br/>
 
 ***
 🔌Branchements :
 
 Alim CC 42V 
-DC+ => Red phase Top/Bott     => PWM1 / PWM1 complémentaire 
-DC- => Yellow phase Top/Bott => PWM2 / PWM2 complémentaire 
-Ne pas alimenter/gnd le PCB 
-Set speed to 50% => moteur à l'arret
+DC+ => Red phase Top/Bott     => PWM1 / PWM1 complémentaire <br />
+
+DC- => Yellow phase Top/Bott => PWM2 / PWM2 complémentaire <br />
+Ne pas alimenter/gnd le PCB <br />
+Set speed to 50% => moteur à l'arret<br />
 
 ***
 
 - Test du moteur en boucle ouverte ✅
-Remarques : 
-a) Mise en défaut du hacheur lorsque les commandes de vitesses sont trop espacé. (ex speed = 50% puis speed = 70%) Cause : Pic de courant car commande trop brusque => Besoin d'asservissement en courant.  
-b) Saut de tension lors du freinage car alimentation non réversible.
+Remarques : <br/>
+a) Mise en défaut du hacheur lorsque les commandes de vitesses sont trop espacé. (ex speed = 50% puis speed = 70%) Cause : Pic de courant car commande trop brusque => Besoin d'asservissement en courant. <br /> 
+b) Saut de tension lors du freinage car alimentation non réversible. <br/>
 
 - Mesure du courant moteur 
 
