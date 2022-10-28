@@ -135,9 +135,9 @@ int main(void)
 
 	HAL_UART_Receive_IT(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE);
 
-	uint16_t speed = 50*( (uint16_t) 12500/100);
+	uint16_t speed = 50*( (uint16_t) TIM_MAX/100);
 	__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,speed);
-	__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,12500-speed);
+	__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,TIM_MAX-speed);
 
 	/* USER CODE END 2 */
 
