@@ -19,6 +19,8 @@ extern uint8_t uartTxBuffer[];
 static uint8_t prompt[]="user@Nucleo-STM32G431>>";
 static uint8_t cmdNotFound[]="Command not found\r\n";
 
+char buf[50];
+
 const uint8_t help[]=""
 		"\r\n*-----------------------------*"
 		"\r\n| Commandes disponible        |"
@@ -42,7 +44,10 @@ const uint8_t pinout[]=""
 
 const uint8_t powerOn[]="POWER ON\r\n"; // contenant le message d'allumage du moteur
 const uint8_t powerOff[]="POWER OFF\r\n";
-uint16_t speed=0;
+
+uint16_t speed = 50*( (uint16_t) 12500/100);
+uint16_t last_speed=50*( (uint16_t) 12500/100);
+
 
 void handle_command(char *argv[]){
 	if(strcmp(argv[0],"set")==0){
@@ -69,7 +74,10 @@ void handle_command(char *argv[]){
 	}
 	else if(strcmp(argv[0],"start")==0)
 	{
+		//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_SET);
+		HAL_Delay(2);
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_RESET);
 		HAL_UART_Transmit(&huart2, powerOn, sizeof(powerOn), HAL_MAX_DELAY);
 	}
 	else if(strcmp(argv[0],"stop")==0)
@@ -82,9 +90,28 @@ void handle_command(char *argv[]){
 		if(speed>(uint16_t)100){
 			speed=(uint16_t)100;
 		}
-		speed = speed*( (uint16_t) 1250/100);
-		__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,speed);
-		__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,speed);
+		speed = speed*( (uint16_t) 12500/100);
+		/*__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,speed);
+		__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,12500-speed);*/
+		if(last_speed<speed){
+			while(last_speed<speed){
+				last_speed+=100;
+				__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,last_speed);
+				__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,12500-last_speed);
+				HAL_Delay(50);
+			}
+		}
+		else if (last_speed>speed){
+			while(last_speed>speed){
+				last_speed-=100;
+				__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,last_speed);
+				__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,12500-last_speed);
+				HAL_Delay(50);
+			}
+		}
+
+
+
 		sprintf(uartTxBuffer,"Set speed to : %d %\r\n",atoi(argv[1]));
 		HAL_UART_Transmit(&huart2, uartTxBuffer, 32, HAL_MAX_DELAY);
 	}
