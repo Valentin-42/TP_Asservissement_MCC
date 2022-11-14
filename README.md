@@ -70,13 +70,54 @@ Remarques : <br/>
 a) Mise en défaut du hacheur lorsque les commandes de vitesses sont trop espacé. (ex speed = 50% puis speed = 70%) Cause : Pic de courant car commande trop brusque => Besoin d'asservissement en courant. <br /> 
 b) Saut de tension lors du freinage car alimentation non réversible. <br/>
 
-- Mesure du courant moteur 
+- Mesure du courant moteur  ⚙️ A faire
 
-- Lecture de l'encodeur 
+- Lecture de l'encodeur  ⚙️ A faire
 
 
 ## TP3
+
+-  〽️ Mesure du courant moteur :
+
+Relevé du courant par les pins du hacheur à l'oscilloscope :
+<br />
+    <img src="https://github.com/Valentin-42/TP_Asservissement_MCC/1.png" alt="1- Speed = 60" width="800" height="480">
+ <br />
+    <img src="https://github.com/Valentin-42/TP_Asservissement_MCC/2.png" alt="2- Speed = 80" width="800" height="480">
+ <br />
+
+La fréquence du signal est de $Fsig = 1.5 kHz$ <br />
+On échantillonnera à une fréquence au moins deux fois supérieure. (Shannon)
+***
+- Configuration de l'ADC : <br />
+
+
+➡️D'après la doc :  ${Fsampling  }= {Fclk  \over sampling-time[cycles] + 0.5 + résolution[bits]}$<br />
+On a pris 
+
+➡️ Résolution 12 bits = 4096 max  <br />
+➡️ Chanel 1 sur phase Jaune  <br />
+
+On génère une interruption sur conversion de l'ADC.  <br />
+
+➡️ Scaling Hall Current sensor $12 A/ V$ & $2.5 V = 0 A$<br />
+➡️La tension max d'entrée de l'ADC est de 3.3V <br />
+On remonte à la valeur de courant via :
+${I}={((Vadc *3.3)-2.5 )*12 \over 4096}$  <br />
+
+
+***
+- 🏃 Mesure de vitesse :
+
+
+➡️ Configuration d'un timer en encodeur (combine channel encodeur mode). 
+
+
+
 ## TP4
+
+***
+
 ### Built With
 
 This section should list any major frameworks/libraries used in this project.
