@@ -60,6 +60,10 @@ void Error_Handler(void);
 #define Button_Pin GPIO_PIN_13
 #define Button_GPIO_Port GPIOC
 #define Button_EXTI_IRQn EXTI15_10_IRQn
+#define ADC1_YellowPhase_Pin GPIO_PIN_0
+#define ADC1_YellowPhase_GPIO_Port GPIOA
+#define ADC1_BluePhase_Pin GPIO_PIN_1
+#define ADC1_BluePhase_GPIO_Port GPIOA
 #define LED_Pin GPIO_PIN_5
 #define LED_GPIO_Port GPIOA
 #define T_SWDIO_Pin GPIO_PIN_13
@@ -68,11 +72,9 @@ void Error_Handler(void);
 #define T_SWCLK_GPIO_Port GPIOA
 #define T_SWO_Pin GPIO_PIN_3
 #define T_SWO_GPIO_Port GPIOB
-
-#define TIM_MAX	12500
-#define PWM_STEP 100
 /* USER CODE BEGIN Private defines */
-
+#define TIM_MAX 12500
+#define PWM_STEP 100
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

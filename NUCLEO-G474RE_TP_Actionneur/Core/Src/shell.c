@@ -49,6 +49,10 @@ const uint8_t powerOff[]="POWER OFF\r\n";
 uint16_t speed = 50*( (uint16_t) 12500/100);
 uint16_t last_speed=50*( (uint16_t) 12500/100);
 
+extern char adc_value_txt[25];
+extern float freq;
+char freq_txt[40];
+
 
 void handle_command(char *argv[]){
 	if(strcmp(argv[0],"set")==0){
@@ -86,6 +90,15 @@ void handle_command(char *argv[]){
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_RESET);
 		HAL_UART_Transmit(&huart2, powerOff, sizeof(powerOff), HAL_MAX_DELAY);
 	}
+	else if(strcmp(argv[0],"adc")==0)
+	{
+		HAL_UART_Transmit(&huart2, adc_value_txt, sizeof(adc_value_txt), HAL_MAX_DELAY);
+	}
+	else if(strcmp(argv[0],"freq")==0)
+		{
+			sprintf(freq_txt, "freq encodeur : %f Hz \r\n", freq);
+			HAL_UART_Transmit(&huart2, freq_txt, sizeof(freq_txt), HAL_MAX_DELAY);
+		}
 	else if(strcmp(argv[0],"speed=")==0){
 		speed = (uint16_t) atoi(argv[1]);
 		if(speed>(uint16_t)100){
