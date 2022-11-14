@@ -81,9 +81,9 @@ b) Saut de tension lors du freinage car alimentation non réversible. <br/>
 
 Relevé du courant par les pins du hacheur à l'oscilloscope :
 <br />
-    <img src="https://github.com/Valentin-42/TP_Asservissement_MCC/1.png" alt="1- Speed = 60" width="800" height="480">
+    <img src="https://github.com/Valentin-42/TP_Asservissement_MCC/blob/main/1.png" alt="1- Speed = 60" width="800" height="480">
  <br />
-    <img src="https://github.com/Valentin-42/TP_Asservissement_MCC/2.png" alt="2- Speed = 80" width="800" height="480">
+    <img src="https://github.com/Valentin-42/TP_Asservissement_MCC/blob/main/2.png" alt="2- Speed = 80" width="800" height="480">
  <br />
 
 La fréquence du signal est de $Fsig = 1.5 kHz$ <br />
