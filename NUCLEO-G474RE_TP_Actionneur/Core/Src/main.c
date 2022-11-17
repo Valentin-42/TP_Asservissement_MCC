@@ -82,13 +82,13 @@ void SystemClock_Config(void);
  * @param TIM_HandleTypeDef *htim
  * @return None
  *
- * Interruption de TIM2 : gestion de la lecture de l'encodeur pour mesurer la vitesse de rotation du moteur.
+ * Interruption de TIM2 : gestion de la lecture de l'encodeur pour mesurer la vitesse de rotation du moteur et lancement d'une conversion de l'UART
  * Interruption de TIM3 : gestion des dépassements du registre de comptage de TIM3 en mode encodeur.
  */
 void_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(htim->Instance == TIM2){
-		//HAL_ADC_Start_IT(&hadc1);
+		HAL_ADC_Start_IT(&hadc1);
 
 		//Encodeur
 		if(state==0){

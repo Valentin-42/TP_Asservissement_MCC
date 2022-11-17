@@ -105,10 +105,14 @@ void handle_command(char *argv[]){
 		}
 	else if(strcmp(argv[0],"speed=")==0){
 		speed = (uint16_t) atoi(argv[1]);
+		// Vérifie la justesse de la valeur en pourcentage de la vitesse
 		if(speed>(uint16_t)100){
 			speed=(uint16_t)100;
 		}
+		//conversion de la vitesse en nombre de cycle du timer générant les PWM
 		speed = speed*( (uint16_t) 12500/100);
+
+		//Augmentation progressive de la vitesse
 		if(last_speed<speed){
 			while(last_speed<speed){
 				last_speed+=PWM_STEP;
@@ -117,6 +121,8 @@ void handle_command(char *argv[]){
 				HAL_Delay(50);
 			}
 		}
+
+		//Augmentation progressive de la vitesse
 		else if (last_speed>speed){
 			while(last_speed>speed){
 				last_speed-=PWM_STEP;
@@ -126,8 +132,7 @@ void handle_command(char *argv[]){
 			}
 		}
 
-
-
+		// Renvoie de la valeur de la vitesse en %
 		sprintf(uartTxBuffer,"Set speed to : %d %\r\n",atoi(argv[1]));
 		HAL_UART_Transmit(&huart2, uartTxBuffer, 32, HAL_MAX_DELAY);
 	}
