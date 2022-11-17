@@ -15,7 +15,6 @@
 1. [TP1 ](#TP1)
 2. [TP2](#TP2)
 3. [TP3](#TP3)
-4. [TP4](#TP4)
  </center>
 </div>
 
@@ -113,8 +112,6 @@ ${I}={((Vadc *3.3)-2.5 )*12 \over 4096}$  <br />
 ➡️ Configuration d'un timer en encodeur (combine channel encodeur mode). 
 
 
-
-## TP4
 
 ***
 
