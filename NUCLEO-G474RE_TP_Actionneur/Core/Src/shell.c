@@ -53,7 +53,11 @@ extern char adc_value_txt[25];
 extern float freq;
 char freq_txt[40];
 
-
+/**
+ * @brief Fonction de gestion des commandes reçues par la liaison UART
+ * @param char *argv[]
+ * @return None
+ */
 void handle_command(char *argv[]){
 	if(strcmp(argv[0],"set")==0){
 		if(strcmp(argv[1],"PA5")==0){
@@ -105,8 +109,6 @@ void handle_command(char *argv[]){
 			speed=(uint16_t)100;
 		}
 		speed = speed*( (uint16_t) 12500/100);
-		/*__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,speed);
-		__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,12500-speed);*/
 		if(last_speed<speed){
 			while(last_speed<speed){
 				last_speed+=PWM_STEP;

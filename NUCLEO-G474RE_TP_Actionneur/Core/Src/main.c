@@ -4,14 +4,7 @@
  * @file           : main.c
  * @brief          : Main program body
  ******************************************************************************
- * @attention
- *
- * Copyright (c) 2022 STMicroelectronics.
- * All rights reserved.
- *
- * This software is licensed under terms that can be found in the LICENSE file
- * in the root directory of this software component.
- * If no LICENSE file comes with this software, it is provided AS-IS.
+ * Contrôle de la vitesse de rotation d'une machine à courant continu par l'intérmédiaire d'un shell communiquant sur liaison UART.
  *
  ******************************************************************************
  */
@@ -40,11 +33,8 @@
 #define UART_RX_BUFFER_SIZE 1
 #define CMD_BUFFER_SIZE 64
 #define MAX_ARGS 9
-// LF = line feed, saut de ligne
 #define ASCII_LF 0x0A
-// CR = carriage return, retour chariot
 #define ASCII_CR 0x0D
-// DEL = delete
 #define ASCII_DEL 0x7F
 /* USER CODE END PD */
 
@@ -87,7 +77,15 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+/**
+ * @brief Fonction de gestion des interruptions des timers.
+ * @param TIM_HandleTypeDef *htim
+ * @return None
+ *
+ * Interruption de TIM2 : gestion de la lecture de l'encodeur pour mesurer la vitesse de rotation du moteur.
+ * Interruption de TIM3 : gestion des dépassements du registre de comptage de TIM3 en mode encodeur.
+ */
+void_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(htim->Instance == TIM2){
 		//HAL_ADC_Start_IT(&hadc1);
@@ -108,10 +106,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance == TIM3){
 		overflow++;
 	}
-	//__HAL_TIM_GET_COUNTER(&htim3);
-
 }
-
+/**
+ * @brief Fonction de gestion des interruptions de l'ADC.
+ * @param ADC_HandleTypeDef *hadc
+ * @return None
+ *
+ * Interruption lors de la fin d'une conversion de l'ADC. Moyennage sur 100 acquisitions et affichage de la valeur convertie.
+ */
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc){
 	adc_value+=((((float)HAL_ADC_GetValue(&hadc1)*3.3)/4096)-2.5)*12;
 	if(adc_mean_cnt>100){
@@ -127,6 +129,9 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc){
 /**
   * @brief  The application entry point.
   * @retval int
+  *
+  * Initialisation du microcontrôleur.
+  * Gestion de la communication avec un shell sur l'UART2.
   */
 int main(void)
 {
@@ -286,10 +291,25 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+ * @brief Fonction de gestion des interruptions lors de la réception de l'UART.
+ * @param UART_HandleTypeDef * huart
+ * @return None
+ *
+ * Passage de la variable uartRxReceived à 1 et lancement d'une nouvelle acquisition sur interruption.
+ */
 void HAL_UART_RxCpltCallback (UART_HandleTypeDef * huart){
 	uartRxReceived = 1;
 	HAL_UART_Receive_IT(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE);
 }
+
+/**
+ * @brief Fonction de gestion des interruptions lors de l'appui sur le bouton bleu de la carte STM32.
+ * @param uint16_t GPIO_Pin
+ * @return None
+ *
+ * Envoi d'un créneau d'une microseconde sur la pin PC3 pour démarrage du hacheur.
+ */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	/* Prevent unused argument(s) compilation warning */
@@ -300,21 +320,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		HAL_Delay(1);
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_RESET);
 
-		/*
-		if(ButtonState == 1){
-			HAL_UART_Transmit(&huart2, "\r\nStart from button\r\n", 21, HAL_MAX_DELAY);
-			HAL_UART_Transmit(&huart2, prompt, sizeof(prompt), HAL_MAX_DELAY);
-		}
-		else{
-			HAL_UART_Transmit(&huart2, "\r\nStop from button\r\n", 21, HAL_MAX_DELAY);
-			HAL_UART_Transmit(&huart2, prompt, sizeof(prompt), HAL_MAX_DELAY);
-		}
-		 */
-	}
-
-	/* NOTE: This function should not be modified, when the callback is needed,
-           the HAL_GPIO_EXTI_Callback could be implemented in the user file
-	 */
 }
 /* USER CODE END 4 */
 
